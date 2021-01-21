@@ -1,4 +1,5 @@
 #import("_cascade/formats/velocity/setup-block")
+
 #set ( $pageSetupBlockReturnRef = [] )
 #findSetupBlock($currentPage.parentFolder, $pageSetupBlockReturnRef)
 #if ( $pageSetupBlockReturnRef.size() > 0 )
