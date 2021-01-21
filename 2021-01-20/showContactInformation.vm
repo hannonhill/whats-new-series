@@ -1,5 +1,4 @@
 #import("_cascade/formats/velocity/setup-block")
-
 #set ( $pageSetupBlockReturnRef = [] )
 #findSetupBlock($currentPage.parentFolder, $pageSetupBlockReturnRef)
 #if ( $pageSetupBlockReturnRef.size() > 0 )
@@ -31,15 +30,14 @@
             #set ( $contactInformation = $contact.getChild("customContactInformation") )
             #if ( $type == "block" && !$_PropertyTool.isNull($contact.getChild("contactBlock").asset) )
                 #set ( $contactInformation = $contact.getChild("contactBlock").asset.getStructuredDataNode("customContactInformation") )
-            #elseif ( $type == "inherit" && !$_PropertyTool.isNull($setupBlock.parentFolder) )
+            #elseif ( $type == "inherit" )
                 #set ( $contactSetupBlockReturnRef = [] )
                 #findSetupBlock($setupBlock.parentFolder.parentFolder, $contactSetupBlockReturnRef)
                 #if ( $contactSetupBlockReturnRef.size() > 0 )
-                   #determineContactInfo($contactSetupBlockReturnRef.get(0))
+                    #set ($newSetupBlock = $contactSetupBlockReturnRef.get(0))
+                    #determineContactInfo($newSetupBlock)
                 #end
             #end
-        #else
-            #set ( $contactInformation = false )
         #end
     #end
 #end
