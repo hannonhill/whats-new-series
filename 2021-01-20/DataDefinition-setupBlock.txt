@@ -1,0 +1,18 @@
+<system-data-structure>
+	<asset identifier="banner" label="Hero/Banner Image" type="file"/>
+	<group collapsed="true" identifier="contact" label="Contact Information">
+		<text default="inherit" identifier="type" label="Type" type="radiobutton">
+			<radio-item label="Inherit" value="inherit"/>
+			<radio-item label="None" value="none"/>
+			<radio-item label="Block" show-fields="contact/contactBlock" value="block"/>
+			<radio-item label="Custom" show-fields="contact/customContactInformation" value="custom"/>
+		</text>
+		<asset identifier="contactBlock" label="Contact Block" render-content-depth="2" required="true" type="block"/>
+		<group identifier="customContactInformation" label="Custom Contact Information">
+			<text identifier="name" label="Name" required="true"/>
+			<text identifier="address" label="Physical Address" required="true"/>
+			<text identifier="email" label="Email Address" required="true"/>
+			<text identifier="phone" label="Phone Number" required="true"/>
+		</group>
+	</group>
+</system-data-structure>

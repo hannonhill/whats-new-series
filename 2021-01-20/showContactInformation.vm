@@ -1,0 +1,45 @@
+#import("_cascade/formats/velocity/setup-block")
+
+#set ( $pageSetupBlockReturnRef = [] )
+#findSetupBlock($currentPage.parentFolder, $pageSetupBlockReturnRef)
+#if ( $pageSetupBlockReturnRef.size() > 0 )
+    #set ( $contactInformation = false )
+    #determineContactInfo($pageSetupBlockReturnRef.get(0))
+    <div class="col-md-3 col-sm-12">
+        <div class="row">
+            #if ( $contactInformation )
+                #set ( $name = $contactInformation.getChild("name") )
+                #set ( $address = $contactInformation.getChild("address") )
+                #set ( $email = $contactInformation.getChild("email") )
+                #set ( $phone = $contactInformation.getChild("phone") )
+                <hr/>
+                <p><strong>Contact Information</strong></p>
+                #if (!$_PropertyTool.isEmpty($name.textValue))<p>${_EscapeTool.xml($name.textValue)}</p>#end
+                #if (!$_PropertyTool.isEmpty($address.textValue))<p><address>${_EscapeTool.xml($address.textValue)}</p></address></p>#end
+                #if (!$_PropertyTool.isEmpty($email.textValue))<p><a href="mailto:${_EscapeTool.xml($email.textValue)}">${_EscapeTool.xml($email.textValue)}</a></p>#end
+                #if (!$_PropertyTool.isEmpty($phone.textValue))<p><a href="tel:${_EscapeTool.xml($phone.textValue)}">${_EscapeTool.xml($phone.textValue)}</a></p>#end
+            #end
+        </div>
+    </div>
+#end
+
+#macro ( determineContactInfo $setupBlock )
+    #if ( !$_PropertyTool.isNull($setupBlock) )
+        #set ( $contact = $setupBlock.getStructuredDataNode("contact") )
+        #set ( $type = $contact.getChild("type").textValue )
+        #if ( $type != "none" )
+            #set ( $contactInformation = $contact.getChild("customContactInformation") )
+            #if ( $type == "block" && !$_PropertyTool.isNull($contact.getChild("contactBlock").asset) )
+                #set ( $contactInformation = $contact.getChild("contactBlock").asset.getStructuredDataNode("customContactInformation") )
+            #elseif ( $type == "inherit" && !$_PropertyTool.isNull($setupBlock.parentFolder) )
+                #set ( $contactSetupBlockReturnRef = [] )
+                #findSetupBlock($setupBlock.parentFolder.parentFolder, $contactSetupBlockReturnRef)
+                #if ( $contactSetupBlockReturnRef.size() > 0 )
+                   #determineContactInfo($contactSetupBlockReturnRef.get(0))
+                #end
+            #end
+        #else
+            #set ( $contactInformation = false )
+        #end
+    #end
+#end
