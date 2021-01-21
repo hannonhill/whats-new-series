@@ -1,7 +1,10 @@
 ## Find the closest Setup Block
 #macro ( findSetupBlock $folder, $blockObjectReturnRef )
     #if ( !$_PropertyTool.isNull($folder) )
-        #set ( $setupBlockPath = "${folder.path}/setup" )
+        #set ( $setupBlockPath = "/setup" )
+        #if ($folder.path != "/")
+            #set ( $setupBlockPath = "${folder.path}${setupBlockPath}" )
+        #end
         #set ( $locatedBlock = $_.locateBlock($setupBlockPath) )
         #if ( !$_PropertyTool.isNull($locatedBlock) )
             #set ( $_void = $blockObjectReturnRef.add($locatedBlock) )
